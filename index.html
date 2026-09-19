@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#211d38">
+  <title></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="floaters" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <audio id="birthdayMusic" src="assets/music.mp3" preload="metadata"></audio>
+
+  <main>
+    <section class="intro screen" id="intro" aria-labelledby="introTitle">
+      <div class="intro__inner">
+        <p class="eyebrow" id="introEyebrow"></p>
+        <h1 id="introTitle"></h1>
+        <button class="button button--gold" id="openButton" type="button"></button>
+      </div>
+    </section>
+
+    <div class="site-shell" id="siteShell" aria-hidden="true" hidden>
+      <button class="music-toggle" id="musicToggle" type="button"></button>
+      <p class="countdown" id="countdown" hidden></p>
+
+      <section class="section hero reveal" id="hero" aria-labelledby="heroTitle">
+        <p class="eyebrow" id="heroEyebrow"></p>
+        <h2 id="heroTitle"></h2>
+        <p class="lede" id="heroSubtitle"></p>
+      </section>
+
+      <section class="section reveal" id="wishes" aria-labelledby="wishesHeading">
+        <div class="section-heading">
+          <p class="eyebrow" id="wishesEyebrow"></p>
+          <h2 id="wishesHeading"></h2>
+        </div>
+        <div class="wish-stage" id="wishStage" aria-live="polite"></div>
+        <div class="wish-controls">
+          <span class="progress" id="wishProgress"></span>
+          <button class="button button--quiet" id="nextWish" type="button"></button>
+        </div>
+      </section>
+
+      <section class="section reveal" id="admirations" aria-labelledby="admirationsHeading">
+        <div class="section-heading">
+          <p class="eyebrow" id="admirationsEyebrow"></p>
+          <h2 id="admirationsHeading"></h2>
+          <p class="hint" id="admirationsHint"></p>
+        </div>
+        <div class="flip-grid" id="flipGrid"></div>
+      </section>
+
+      <section class="section reveal" id="twenties" aria-labelledby="twentiesHeading">
+        <div class="section-heading">
+          <p class="eyebrow" id="twentiesEyebrow"></p>
+          <h2 id="twentiesHeading"></h2>
+          <p class="hint" id="twentiesHint"></p>
+        </div>
+        <div class="envelope-grid" id="envelopeGrid"></div>
+      </section>
+
+      <section class="section cake-section reveal" id="cake" aria-labelledby="cakeHeading">
+        <div class="section-heading">
+          <p class="eyebrow" id="cakeEyebrow"></p>
+          <h2 id="cakeHeading"></h2>
+          <p class="hint" id="cakeInstruction"></p>
+        </div>
+        <button class="cake" id="candleButton" type="button" aria-label="">
+          <span class="cake__flame" aria-hidden="true"></span>
+          <span class="cake__candle" aria-hidden="true"></span>
+          <span class="cake__top" aria-hidden="true"></span>
+          <span class="cake__body" aria-hidden="true"></span>
+        </button>
+        <p class="wish-line" id="wishLine" hidden></p>
+      </section>
+
+      <section class="section final reveal" id="final" aria-labelledby="finalHeading">
+        <p class="eyebrow" id="finalEyebrow"></p>
+        <h2 id="finalHeading"></h2>
+        <p class="final__message" id="finalMessage"></p>
+        <p class="memory" id="finalMemory"></p>
+        <p class="signoff" id="finalSignoff"></p>
+        <p class="signature" id="finalName"></p>
+        <button class="button button--gold" id="replayButton" type="button"></button>
+      </section>
+    </div>
+  </main>
+  <script src="content.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -33,7 +33,7 @@ const birthdayContent = {
   wishes: {
     heading: "A few things I hope you carry with you",
     cards: [
-      "Keep making room for the interests that light you up: [EDIT: her interests or passions].",
+      "Keep making room for the interests that light you up.",
       "Your way of noticing small details makes ordinary days feel more considered.",
       "I hope this year gives you space to try something new without needing to be perfect at it.",
       "When things feel uncertain, Always remember the Almighty for guidance.",

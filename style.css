@@ -87,12 +87,20 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 .wish-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
 .progress { color: var(--muted); font-size: .78rem; }
 .flip-grid, .envelope-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.flip-card { min-height: 170px; perspective: 800px; cursor: pointer; }
-.flip-card__inner { position: relative; width: 100%; height: 100%; min-height: 170px; transform-style: preserve-3d; transition: transform .75s ease; }
-.flip-card.is-flipped .flip-card__inner { transform: rotateY(180deg); }
-.flip-card__face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; border-radius: 24px; backface-visibility: hidden; text-align: center; }
-.flip-card__front { color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.65rem; }
-.flip-card__back { transform: rotateY(180deg); color: var(--muted); font-size: .9rem; line-height: 1.5; }
+.flip-card { min-height: 190px; border: 0; padding: 0; background: transparent; cursor: pointer; transition: transform .35s ease, opacity .35s ease; }
+.flip-card:active, .flip-card.is-pressing { transform: translateY(3px) scale(.985); }
+.flip-card__inner { position: relative; display: block; width: 100%; min-height: 190px; overflow: hidden; border-radius: 24px; background: var(--glass); box-shadow: var(--shadow); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .75s cubic-bezier(.22, .8, .25, 1); -webkit-transition: -webkit-transform .75s cubic-bezier(.22, .8, .25, 1); }
+.flip-card__inner::after { content: ""; position: absolute; inset: 1px; z-index: 1; border-radius: 23px; background: linear-gradient(115deg, rgba(255,255,255,.28), transparent 42%); opacity: 0; pointer-events: none; transition: opacity .65s ease; }
+.flip-card__flap { position: absolute; inset: 0 0 auto; z-index: 2; height: 82px; background: rgba(220, 216, 243, .96); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform .85s cubic-bezier(.22, .8, .25, 1); }
+.flip-card__seal { position: absolute; top: 64px; left: 50%; z-index: 3; display: grid; width: 30px; height: 30px; place-items: center; border-radius: 50%; background: var(--gold); color: var(--cream); font-size: .8rem; transform: translateX(-50%); transition: transform .65s ease, opacity .65s ease; }
+.flip-card__face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 22px 18px; border-radius: 24px; text-align: center; }
+.flip-card__front { color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.65rem; transition: opacity .45s ease, transform .75s cubic-bezier(.22, .8, .25, 1); }
+.flip-card__back { color: var(--muted); font-size: .9rem; line-height: 1.5; opacity: 0; transform: translateY(24px) scale(.96); transition: opacity .75s ease .2s, transform .85s cubic-bezier(.22, .8, .25, 1) .15s; }
+.flip-card.is-flipped .flip-card__flap { transform: rotateX(180deg); }
+.flip-card.is-flipped .flip-card__seal { opacity: 0; transform: translateX(-50%) scale(.55); }
+.flip-card.is-flipped .flip-card__inner::after { opacity: 1; }
+.flip-card.is-flipped .flip-card__front { opacity: 0; transform: translateY(-18px) scale(.94); }
+.flip-card.is-flipped .flip-card__back { opacity: 1; transform: translateY(0); }
 .envelope { position: relative; min-height: 200px; padding: 22px 16px; overflow: hidden; cursor: pointer; }
 .envelope__flap { position: absolute; inset: 0 0 auto; height: 72px; background: rgba(245, 216, 220, .9); clip-path: polygon(0 0, 100% 0, 50% 100%); transition: transform .75s ease; transform-origin: top; }
 .envelope__seal { position: absolute; top: 56px; left: 50%; z-index: 1; display: grid; width: 31px; height: 31px; place-items: center; border-radius: 50%; background: var(--gold); color: #fff8ee; font-size: .85rem; transform: translateX(-50%) scale(1); transition: transform .75s ease, opacity .75s ease; }
@@ -115,8 +123,8 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 .cake.is-blowing .cake__flame { animation: flame-waver .32s ease-in-out infinite alternate; transform: translateX(-50%) rotate(-62deg) scale(.82); }
 .cake__smoke { position: absolute; left: 50%; bottom: 145px; width: 14px; height: 14px; border: 2px solid rgba(111, 104, 125, .38); border-bottom: 0; border-radius: 50%; opacity: 0; transform: translateX(-50%); }
 .cake.is-out .cake__smoke { animation: smoke-rise 2.2s ease-out .1s both; }
-.cake.is-out .cake__glow { opacity: 0; transition: opacity .35s ease; }
-.cake.is-out .cake__flame { opacity: 0; transform: translateX(-50%) rotate(-45deg) scale(.7); }
+.cake.is-out .cake__glow { animation: none; opacity: 0 !important; visibility: hidden; transition: opacity .35s ease, visibility 0s linear .35s; }
+.cake.is-out .cake__flame { animation: none; opacity: 0 !important; visibility: hidden; transform: translateX(-50%) rotate(-45deg) scale(.7); transition: opacity .2s ease, visibility 0s linear .2s; }
 .ember { position: absolute; z-index: 2; width: 4px; height: 4px; border-radius: 50%; background: #ffd783; box-shadow: 0 0 8px #ffd783; pointer-events: none; animation: ember-away .7s ease-out forwards; }
 .wish-line { margin: 22px auto 0; color: var(--muted); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.65rem; }
 .birthday-companion { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 26px auto 0; opacity: 0; transform: translateY(12px); }

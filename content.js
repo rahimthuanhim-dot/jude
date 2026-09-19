@@ -1,6 +1,7 @@
 const birthdayContent = {
   meta: {
-    introEyebrow: "Something for Julina",
+    introEyebrow: "HAPPY BIRTHDAY 🎂🥳🎂🎊🎉🎈",
+    introTitle: "Something for Julina",
     pageTitle: "Something for Julina",
     introButton: "Tap to open",
     mute: "Mute music",
@@ -34,7 +35,7 @@ const birthdayContent = {
     heading: "A few things I hope you carry with you",
     cards: [
       "Keep making room for the interests that light you up.",
-      "Your way of noticing small details makes ordinary days feel more considered.",
+      "Your way of noticing small details makes people feel more considered.",
       "I hope this year gives you space to try something new without needing to be perfect at it.",
       "When things feel uncertain, Always remember the Almighty for guidance.",
       "I hope you find people and places where you can be fully yourself.",
@@ -46,7 +47,7 @@ const birthdayContent = {
     hint: "Tap a card to turn it over",
     cards: [
       {
-        trait: "Tumi caring person ase as far as I know",
+        trait: "Tumi caring person ase",
         detail: "remember you use to text me Good Morning everyday? 🤣🤣🤣🤣"
       },
       {
@@ -61,7 +62,7 @@ const birthdayContent = {
   },
   twenties: {
     heading: "For your 20s",
-    hint: "Tap each envelope when you are ready",
+    hint: "Tap each envelope.",
     envelopes: [
       {
         label: "Growth",

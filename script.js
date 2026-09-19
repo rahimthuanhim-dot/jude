@@ -45,7 +45,7 @@
   function setupText() {
     document.title = content.meta.pageTitle;
     text("introEyebrow", content.meta.introEyebrow);
-    text("introTitle", content.meta.introEyebrow);
+    text("introTitle", content.meta.introTitle);
     text("openButton", content.meta.introButton);
     text("heroEyebrow", content.meta.today);
     text("heroTitle", content.hero.title);
@@ -128,11 +128,24 @@
       card.type = "button";
       card.className = "flip-card";
       card.setAttribute("aria-label", cardData.trait);
-      card.innerHTML = '<span class="flip-card__inner"><span class="flip-card__face flip-card__front"></span><span class="flip-card__face flip-card__back"></span></span>';
+      card.setAttribute("aria-pressed", "false");
+      card.innerHTML = '<span class="flip-card__inner"><span class="flip-card__flap" aria-hidden="true"></span><span class="flip-card__seal" aria-hidden="true">✦</span><span class="flip-card__face flip-card__front"></span><span class="flip-card__face flip-card__back"></span></span>';
       card.querySelector(".flip-card__front").textContent = cardData.trait;
       card.querySelector(".flip-card__back").textContent = cardData.detail;
       card.addEventListener("click", function () {
-        card.classList.toggle("is-flipped");
+        var flipped = card.classList.toggle("is-flipped");
+        card.setAttribute("aria-pressed", flipped ? "true" : "false");
+        card.classList.add("is-opening");
+        window.setTimeout(function () { card.classList.remove("is-opening"); }, 900);
+      });
+      card.addEventListener("pointerdown", function () {
+        card.classList.add("is-pressing");
+      });
+      card.addEventListener("pointerup", function () {
+        card.classList.remove("is-pressing");
+      });
+      card.addEventListener("pointercancel", function () {
+        card.classList.remove("is-pressing");
       });
       grid.appendChild(card);
     });
@@ -247,7 +260,7 @@
     wishIndex = 0;
     document.getElementById("wishStage").innerHTML = "";
     updateWish();
-    document.querySelectorAll(".flip-card, .envelope").forEach(function (item) { item.classList.remove("is-flipped", "is-open"); });
+    document.querySelectorAll(".flip-card, .envelope").forEach(function (item) { item.classList.remove("is-flipped", "is-opening", "is-pressing", "is-open"); });
     document.getElementById("candleButton").classList.remove("is-out", "is-blowing");
     document.getElementById("wishLine").hidden = true;
     intro.hidden = false;

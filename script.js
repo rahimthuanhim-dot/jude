@@ -10,10 +10,36 @@
   var wishIndex = 0;
   var audioStarted = false;
   var audioUnavailable = false;
+  var candleTimer = null;
 
   function text(id, value) {
     var element = document.getElementById(id);
     if (element) element.textContent = value;
+  }
+
+  function releaseEmbers(candle) {
+    for (var i = 0; i < 7; i += 1) {
+      var ember = document.createElement("span");
+      ember.className = "ember";
+      ember.style.left = (candle.offsetWidth / 2 + (Math.random() * 14 - 7)) + "px";
+      ember.style.top = "45px";
+      ember.style.setProperty("--drift-x", (18 + Math.random() * 35) + "px");
+      ember.style.setProperty("--drift-y", (-18 + Math.random() * 25) + "px");
+      candle.appendChild(ember);
+      window.setTimeout(function (particle) { particle.remove(); }, 800, ember);
+    }
+  }
+
+  function extinguishCandle() {
+    var candle = document.getElementById("candleButton");
+    if (candle.classList.contains("is-out")) return;
+    candle.classList.remove("is-blowing");
+    candle.classList.add("is-out");
+    releaseEmbers(candle);
+    text("wishLine", content.cake.wish);
+    document.getElementById("wishLine").hidden = false;
+    candle.setAttribute("aria-label", content.cake.wish);
+    burst();
   }
 
   function setupText() {
@@ -35,6 +61,7 @@
     text("cakeEyebrow", content.meta.labels.cake);
     text("cakeHeading", content.cake.heading);
     text("cakeInstruction", content.cake.instruction);
+    text("birthdayCompanionMessage", content.cake.companion);
     text("finalEyebrow", content.meta.labels.final);
     text("finalHeading", content.final.heading);
     text("finalMessage", content.final.message);
@@ -62,13 +89,26 @@
     }
   }
 
+  function createSparkles() {
+    var container = document.getElementById("heroSparkles");
+    container.innerHTML = "";
+    for (var i = 0; i < 9; i += 1) {
+      var sparkle = document.createElement("span");
+      sparkle.className = "sparkle";
+      sparkle.style.left = (10 + ((i * 23) % 80)) + "%";
+      sparkle.style.top = (10 + ((i * 37) % 75)) + "%";
+      sparkle.style.animationDelay = (i * .14) + "s";
+      container.appendChild(sparkle);
+    }
+  }
+
   function updateWish() {
     var stage = document.getElementById("wishStage");
     var card = stage.querySelector(".wish-card");
     var show = function () {
       stage.innerHTML = "";
       var newCard = document.createElement("article");
-      newCard.className = "wish-card";
+      newCard.className = "wish-card is-entering";
       newCard.textContent = content.wishes.cards[wishIndex];
       stage.appendChild(newCard);
       text("wishProgress", content.meta.wishProgress.replace("{current}", wishIndex + 1).replace("{total}", content.wishes.cards.length));
@@ -105,7 +145,7 @@
       envelope.type = "button";
       envelope.className = "envelope";
       envelope.setAttribute("aria-label", content.meta.openEnvelope + ": " + note.label);
-      envelope.innerHTML = '<span class="envelope__flap" aria-hidden="true"></span><span class="envelope__label"></span><span class="envelope__message"></span>';
+      envelope.innerHTML = '<span class="envelope__flap" aria-hidden="true"></span><span class="envelope__seal" aria-hidden="true">✦</span><span class="envelope__label"></span><span class="envelope__message"></span>';
       envelope.querySelector(".envelope__label").textContent = note.label;
       envelope.querySelector(".envelope__message").textContent = note.message;
       envelope.addEventListener("click", function () {
@@ -194,6 +234,7 @@
     shell.removeAttribute("aria-hidden");
     playMusic();
     burst();
+    createSparkles();
     document.querySelectorAll(".reveal").forEach(function (section, index) {
       window.setTimeout(function () { section.classList.add("is-visible"); }, index * 180);
     });
@@ -201,11 +242,13 @@
 
   function resetExperience() {
     window.scrollTo(0, 0);
+    if (candleTimer) window.clearTimeout(candleTimer);
+    candleTimer = null;
     wishIndex = 0;
     document.getElementById("wishStage").innerHTML = "";
     updateWish();
     document.querySelectorAll(".flip-card, .envelope").forEach(function (item) { item.classList.remove("is-flipped", "is-open"); });
-    document.getElementById("candleButton").classList.remove("is-out");
+    document.getElementById("candleButton").classList.remove("is-out", "is-blowing");
     document.getElementById("wishLine").hidden = true;
     intro.hidden = false;
     shell.hidden = true;
@@ -236,16 +279,23 @@
     wishIndex = (wishIndex + 1) % content.wishes.cards.length;
     updateWish();
   });
-  document.getElementById("candleButton").addEventListener("click", function () {
-    var candle = document.getElementById("candleButton");
-    if (!candle.classList.contains("is-out")) {
-      candle.classList.add("is-out");
-      text("wishLine", content.cake.wish);
-      document.getElementById("wishLine").hidden = false;
-      candle.setAttribute("aria-label", content.cake.wish);
-      burst();
+  document.getElementById("candleButton").addEventListener("pointerdown", function () {
+    if (!this.classList.contains("is-out")) {
+      this.classList.add("is-blowing");
+      candleTimer = window.setTimeout(extinguishCandle, 700);
     }
   });
+  document.getElementById("candleButton").addEventListener("pointerup", function () {
+    if (candleTimer) window.clearTimeout(candleTimer);
+    candleTimer = null;
+    extinguishCandle();
+  });
+  document.getElementById("candleButton").addEventListener("pointercancel", function () {
+    if (candleTimer) window.clearTimeout(candleTimer);
+    candleTimer = null;
+    this.classList.remove("is-blowing");
+  });
+  document.getElementById("candleButton").addEventListener("click", extinguishCandle);
   document.getElementById("replayButton").addEventListener("click", resetExperience);
   document.querySelectorAll(".button").forEach(function (button) { button.addEventListener("click", addRipple); });
   musicToggle.addEventListener("click", function () {

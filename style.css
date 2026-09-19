@@ -68,6 +68,8 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 .section { padding: 86px 0 0; }
 .hero { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; }
 .hero h2 { max-width: 650px; }
+.hero__sparkles { position: absolute; inset: 22% 0 auto; height: 120px; pointer-events: none; }
+.sparkle { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 14px rgba(199, 148, 82, .7); opacity: 0; transform: scale(.4); animation: sparkle-in 2.6s ease-out forwards; }
 .lede { max-width: 480px; margin: 24px 0 0; color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
 .section-heading { margin-bottom: 28px; }
 .hint { margin: 12px 0 0; color: var(--muted); font-size: .88rem; }
@@ -80,6 +82,7 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
   -webkit-backdrop-filter: blur(10px);
 }
 .wish-card { padding: 32px 26px; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.8rem; line-height: 1.12; }
+.wish-card.is-entering { animation: wish-in .8s ease-out both; }
 .wish-card.is-changing { opacity: 0; transform: translateY(10px); }
 .wish-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
 .progress { color: var(--muted); font-size: .78rem; }
@@ -92,20 +95,34 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 .flip-card__back { transform: rotateY(180deg); color: var(--muted); font-size: .9rem; line-height: 1.5; }
 .envelope { position: relative; min-height: 200px; padding: 22px 16px; overflow: hidden; cursor: pointer; }
 .envelope__flap { position: absolute; inset: 0 0 auto; height: 72px; background: rgba(245, 216, 220, .9); clip-path: polygon(0 0, 100% 0, 50% 100%); transition: transform .75s ease; transform-origin: top; }
+.envelope__seal { position: absolute; top: 56px; left: 50%; z-index: 1; display: grid; width: 31px; height: 31px; place-items: center; border-radius: 50%; background: var(--gold); color: #fff8ee; font-size: .85rem; transform: translateX(-50%) scale(1); transition: transform .75s ease, opacity .75s ease; }
 .envelope__label { position: relative; display: block; margin-top: 84px; text-align: center; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.55rem; }
 .envelope__message { position: absolute; inset: 20px 16px; display: flex; align-items: center; text-align: center; color: var(--muted); font-size: .88rem; line-height: 1.45; opacity: 0; transform: translateY(12px); transition: transform .75s ease, opacity .75s ease; }
 .envelope.is-open .envelope__flap { transform: rotateX(180deg); }
+.envelope.is-open .envelope__seal { opacity: 0; transform: translateX(-50%) scale(.55); }
 .envelope.is-open .envelope__label { opacity: 0; }
 .envelope.is-open .envelope__message { opacity: 1; transform: translateY(0); }
 .cake-section { text-align: center; }
 .cake { position: relative; width: 190px; height: 170px; margin: 28px auto 0; border: 0; background: transparent; cursor: pointer; }
+.cake::after { content: ""; position: absolute; left: 20px; top: 48px; width: 82px; height: 24px; border-top: 2px solid rgba(255, 255, 255, .75); border-radius: 50%; opacity: 0; transform: translateX(-16px) scaleX(.7); pointer-events: none; }
+.cake.is-blowing::after { opacity: .8; animation: gust .55s ease-out both; }
 .cake__body, .cake__top, .cake__candle, .cake__flame { position: absolute; left: 50%; transform: translateX(-50%); }
+.cake__glow { position: absolute; left: 50%; bottom: 125px; width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 215, 131, .22); transform: translateX(-50%); filter: blur(8px); animation: glow-pulse 1.7s ease-in-out infinite alternate; }
 .cake__body { bottom: 20px; width: 150px; height: 65px; border-radius: 14px 14px 20px 20px; background: #e8aeb5; box-shadow: inset 0 -14px rgba(174, 104, 129, .17); }
 .cake__top { bottom: 72px; width: 150px; height: 28px; border-radius: 50%; background: #fff0e4; }
 .cake__candle { bottom: 90px; width: 12px; height: 50px; border-radius: 6px; background: var(--gold); }
 .cake__flame { bottom: 138px; width: 18px; height: 25px; border-radius: 50% 50% 50% 0; background: #ffd783; transform: translateX(-50%) rotate(-45deg); animation: flicker 1.7s ease-in-out infinite alternate; }
+.cake.is-blowing .cake__flame { animation: flame-waver .32s ease-in-out infinite alternate; transform: translateX(-50%) rotate(-62deg) scale(.82); }
+.cake__smoke { position: absolute; left: 50%; bottom: 145px; width: 14px; height: 14px; border: 2px solid rgba(111, 104, 125, .38); border-bottom: 0; border-radius: 50%; opacity: 0; transform: translateX(-50%); }
+.cake.is-out .cake__smoke { animation: smoke-rise 2.2s ease-out .1s both; }
+.cake.is-out .cake__glow { opacity: 0; transition: opacity .35s ease; }
 .cake.is-out .cake__flame { opacity: 0; transform: translateX(-50%) rotate(-45deg) scale(.7); }
+.ember { position: absolute; z-index: 2; width: 4px; height: 4px; border-radius: 50%; background: #ffd783; box-shadow: 0 0 8px #ffd783; pointer-events: none; animation: ember-away .7s ease-out forwards; }
 .wish-line { margin: 22px auto 0; color: var(--muted); font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.65rem; }
+.birthday-companion { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 26px auto 0; opacity: 0; transform: translateY(12px); }
+.cake-section.is-visible .birthday-companion { animation: companion-arrive 1s ease-out .25s forwards; }
+.companion__bear { display: inline-block; font-size: 2.7rem; animation: bear-wave 2.8s ease-in-out 1.4s infinite; transform-origin: bottom center; }
+.companion__message { max-width: 220px; color: var(--muted); font-size: .88rem; line-height: 1.4; text-align: left; }
 .final { padding-bottom: 36px; text-align: center; }
 .final__message { margin: 26px auto 16px; max-width: 520px; color: var(--muted); line-height: 1.7; }
 .memory { max-width: 480px; margin: 0 auto; color: var(--ink); font-size: .9rem; font-style: italic; }
@@ -119,7 +136,16 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 @keyframes float { from { transform: translate3d(0, 0, 0); opacity: .25; } to { transform: translate3d(12px, -22px, 0); opacity: .7; } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
 @keyframes flicker { from { opacity: .7; transform: translateX(-50%) rotate(-45deg) scale(.95); } to { opacity: 1; transform: translateX(-50%) rotate(-45deg) scale(1.05); } }
+@keyframes flame-waver { from { opacity: .75; } to { opacity: 1; } }
+@keyframes gust { to { opacity: 0; transform: translateX(55px) scaleX(1.15); } }
+@keyframes ember-away { to { opacity: 0; transform: translate(var(--drift-x), var(--drift-y)) scale(.2); } }
+@keyframes glow-pulse { from { opacity: .6; transform: translateX(-50%) scale(.9); } to { opacity: 1; transform: translateX(-50%) scale(1.08); } }
+@keyframes smoke-rise { from { opacity: 0; transform: translate(-50%, 0) scale(.7); } 25% { opacity: .65; } to { opacity: 0; transform: translate(-35%, -55px) scale(1.6); } }
+@keyframes companion-arrive { to { opacity: 1; transform: translateY(0); } }
+@keyframes bear-wave { 0%, 70%, 100% { transform: rotate(0); } 80% { transform: rotate(-8deg); } 90% { transform: rotate(8deg); } }
 @keyframes ripple { to { transform: translate(-50%, -50%) scale(16); opacity: 0; } }
+@keyframes sparkle-in { 0% { opacity: 0; transform: translateY(12px) scale(.4); } 25%, 70% { opacity: .85; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-12px) scale(.65); } }
+@keyframes wish-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media (min-width: 600px) {
   .site-shell { padding-left: 32px; padding-right: 32px; }
   .section { padding-top: 120px; }

@@ -33,6 +33,7 @@
         <p class="eyebrow" id="heroEyebrow"></p>
         <h2 id="heroTitle"></h2>
         <p class="lede" id="heroSubtitle"></p>
+        <span class="hero__sparkles" id="heroSparkles" aria-hidden="true"></span>
       </section>
 
       <section class="section reveal" id="wishes" aria-labelledby="wishesHeading">
@@ -73,11 +74,17 @@
         </div>
         <button class="cake" id="candleButton" type="button" aria-label="">
           <span class="cake__flame" aria-hidden="true"></span>
+          <span class="cake__glow" aria-hidden="true"></span>
+          <span class="cake__smoke" aria-hidden="true"></span>
           <span class="cake__candle" aria-hidden="true"></span>
           <span class="cake__top" aria-hidden="true"></span>
           <span class="cake__body" aria-hidden="true"></span>
         </button>
         <p class="wish-line" id="wishLine" hidden></p>
+        <div class="birthday-companion" aria-live="polite">
+          <span class="companion__bear" aria-hidden="true">🧸</span>
+          <span class="companion__message" id="birthdayCompanionMessage"></span>
+        </div>
       </section>
 
       <section class="section final reveal" id="final" aria-labelledby="finalHeading">

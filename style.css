@@ -64,7 +64,6 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
 .button--quiet { background: rgba(255, 255, 255, .55); color: var(--ink); }
 .site-shell { max-width: 720px; margin: 0 auto; padding: 0 20px 56px; }
 .music-toggle { position: fixed; right: 16px; top: 16px; z-index: 7; border: 0; border-radius: 999px; padding: 9px 13px; color: var(--ink); background: rgba(255, 255, 255, .72); box-shadow: var(--shadow); cursor: pointer; font-size: .78rem; font-weight: 700; }
-.countdown { margin: 0 auto; padding-top: 18px; text-align: center; color: var(--muted); font-size: .8rem; }
 .section { padding: 86px 0 0; }
 .hero { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; }
 .hero h2 { max-width: 650px; }
@@ -160,6 +159,25 @@ h2 { font-size: clamp(2.65rem, 12vw, 4.4rem); }
   .wish-card { padding: 44px; font-size: 2.35rem; }
   .flip-grid, .envelope-grid { gap: 20px; }
 }
+
+@media (max-width: 599px) {
+  .flip-grid, .envelope-grid { grid-template-columns: 1fr; }
+  .flip-card, .flip-card__inner { min-height: 250px; }
+  .flip-card__back {
+    overflow-y: auto;
+    padding: 34px 22px;
+  }
+  .envelope {
+    min-height: 340px;
+  }
+  .envelope__message {
+    inset: 20px 18px;
+    align-items: flex-start;
+    padding: 22px 4px 8px;
+    overflow-y: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

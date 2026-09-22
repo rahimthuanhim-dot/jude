@@ -6,7 +6,6 @@ const birthdayContent = {
     introButton: "Tap to open",
     mute: "Mute music",
     unmute: "Unmute music",
-    countdownSuffix: "days to go",
     today: "Today is your day",
     replay: "Replay",
     nextWish: "Read the next wish",

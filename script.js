@@ -269,23 +269,11 @@
     if (audioStarted) { music.pause(); music.currentTime = 0; audioStarted = false; }
   }
 
-  function setupCountdown() {
-    var now = new Date();
-    var birthday = new Date(2026, 8, 23, 23, 59, 59);
-    var days = Math.ceil((birthday - now) / 86400000);
-    if (now < birthday) {
-      var countdown = document.getElementById("countdown");
-      countdown.hidden = false;
-      countdown.textContent = days + " " + content.meta.countdownSuffix;
-    }
-  }
-
   setupText();
   createFloaters();
   renderFlipCards();
   renderEnvelopes();
   updateWish();
-  setupCountdown();
   document.getElementById("openButton").addEventListener("click", startExperience);
   document.getElementById("nextWish").addEventListener("click", function (event) {
     addRipple(event);
